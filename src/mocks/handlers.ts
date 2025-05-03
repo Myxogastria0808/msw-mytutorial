@@ -7,10 +7,6 @@ import {
   responseHandler,
 } from "./api";
 
-// 共有オブジェクト
-// POST/PUTのレスポンスを格納するためのMap
-// 参照渡しをすることで目的を達成する
-// 参考: https://yukiosada.gitbook.io/javascript/shishino
 const allPosts = new Map();
 
 export const handlers = [
