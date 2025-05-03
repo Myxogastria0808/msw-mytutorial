@@ -1,5 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { pathParamsFetcher, queryParamsFetcher, responseFetcher } from "./lib";
+import {
+  pathParamsFetcher,
+  postFetcher,
+  queryParamsFetcher,
+  responseFetcher,
+} from "./lib";
 
 describe("Mock Service Workers", () => {
   test("Responseを返すパターン", async () => {
@@ -13,5 +18,9 @@ describe("Mock Service Workers", () => {
   test("Query Params pattern", async () => {
     const queryParams: string | void = await queryParamsFetcher();
     expect(queryParams).toBe("Hello, Bob");
+  });
+  test("POST: AllPostsに新規投稿を追加するパターン", async () => {
+    const post: { title: string; content: string } | void = await postFetcher();
+    expect(post).toEqual({ title: "テスト", content: "テスト投稿です。" });
   });
 });

@@ -78,8 +78,8 @@ var response_default = responseFetcher;
 var allPostsFetcher = async () => {
   const allPosts2 = await fetch("http://localhost:3000/api/blog/all").then((res) => {
     console.log("allPosts: ", res);
-    return res;
-  }).then((res) => res.json()).catch((err) => {
+    return res.json();
+  }).catch((err) => {
     console.error("allPosts: ", err);
   });
   return allPosts2;
@@ -88,16 +88,19 @@ var allPosts_default = allPostsFetcher;
 
 // src/lib/post/post.ts
 var postFetcher = async () => {
-  const allPosts2 = await fetch("http://localhost:3000/api/blog/post", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ title: "\u30C6\u30B9\u30C8", content: "\u30C6\u30B9\u30C8\u6295\u7A3F\u3067\u3059\u3002" })
-  }).then((res) => {
+  const allPosts2 = await fetch(
+    "http://localhost:3000/api/blog/post",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ title: "\u30C6\u30B9\u30C8", content: "\u30C6\u30B9\u30C8\u6295\u7A3F\u3067\u3059\u3002" })
+    }
+  ).then((res) => {
     console.log("post: ", res);
-    return res;
-  }).then((res) => res.json()).catch((err) => {
+    return res.json();
+  }).catch((err) => {
     console.error("post: ", err);
   });
   return allPosts2;
@@ -18577,9 +18580,9 @@ var main = async () => {
   const queryParams = await query_default();
   console.log("queryParams: " + queryParams + "\n");
   const post = await post_default();
-  console.log("post: " + post + "\n");
+  console.dir(post);
   const allPosts2 = await allPosts_default();
-  console.log("allPosts: " + allPosts2 + "\n");
+  console.dir(allPosts2);
 };
 main();
 /*! Bundled license information:

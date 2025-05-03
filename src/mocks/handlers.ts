@@ -1,5 +1,4 @@
 import {
-  allPostsHandler,
   noneHandler,
   passthroughHandler,
   pathParamsHandler,
@@ -27,6 +26,4 @@ export const handlers = [
   queryParamsHandler,
   // POST: AllPostsに新規投稿を追加するパターン
   postHandler(allPosts),
-  // GET: AllPostsを返すパターン
-  allPostsHandler(allPosts),
 ];

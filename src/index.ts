@@ -1,5 +1,4 @@
 import {
-  allPostsFetcher,
   noneFetcher,
   pathParamsFetcher,
   postFetcher,
@@ -30,11 +29,7 @@ const main = async () => {
 
   // POST: AllPostsに新規投稿を追加するパターン
   const post = await postFetcher();
-  console.log("post: " + post + "\n");
-
-  // GET: AllPostsを返すパターン
-  const allPosts = await allPostsFetcher();
-  console.log("allPosts: " + allPosts + "\n");
+  console.dir(post);
 };
 
 main();
