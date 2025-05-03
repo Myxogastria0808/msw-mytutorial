@@ -21,7 +21,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// src/lib/fetcher.ts
+// src/lib/greeting/none.ts
 var noneFetcher = async () => {
   const none = await fetch("http://localhost:3000/api/greeting/none").then((res) => {
     console.log("none: ", res);
@@ -30,17 +30,9 @@ var noneFetcher = async () => {
   });
   return none;
 };
-var responseFetcher = async () => {
-  const response = await fetch(
-    "http://localhost:3000/api/greeting/reponse"
-  ).then((res) => {
-    console.log("response: ", res);
-    return res.text();
-  }).catch((err) => {
-    console.error("response: ", err);
-  });
-  return response;
-};
+var none_default = noneFetcher;
+
+// src/lib/greeting/path.ts
 var pathParamsFetcher = async () => {
   const pathParams = await fetch(
     "http://localhost:3000/api/greeting/path/John"
@@ -52,6 +44,9 @@ var pathParamsFetcher = async () => {
   });
   return pathParams;
 };
+var path_default = pathParamsFetcher;
+
+// src/lib/greeting/query.ts
 var queryParamsFetcher = async () => {
   const queryParams = await fetch(
     "http://localhost:3000/api/greeting/query?name=Bob"
@@ -63,6 +58,51 @@ var queryParamsFetcher = async () => {
   });
   return queryParams;
 };
+var query_default = queryParamsFetcher;
+
+// src/lib/greeting/response.ts
+var responseFetcher = async () => {
+  const response = await fetch(
+    "http://localhost:3000/api/greeting/reponse"
+  ).then((res) => {
+    console.log("response: ", res);
+    return res.text();
+  }).catch((err) => {
+    console.error("response: ", err);
+  });
+  return response;
+};
+var response_default = responseFetcher;
+
+// src/lib/post/allPosts.ts
+var allPostsFetcher = async () => {
+  const allPosts2 = await fetch("http://localhost:3000/api/blog/all").then((res) => {
+    console.log("allPosts: ", res);
+    return res;
+  }).then((res) => res.json()).catch((err) => {
+    console.error("allPosts: ", err);
+  });
+  return allPosts2;
+};
+var allPosts_default = allPostsFetcher;
+
+// src/lib/post/post.ts
+var postFetcher = async () => {
+  const allPosts2 = await fetch("http://localhost:3000/api/blog/post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ title: "\u30C6\u30B9\u30C8", content: "\u30C6\u30B9\u30C8\u6295\u7A3F\u3067\u3059\u3002" })
+  }).then((res) => {
+    console.log("post: ", res);
+    return res;
+  }).then((res) => res.json()).catch((err) => {
+    console.error("post: ", err);
+  });
+  return allPosts2;
+};
+var post_default = postFetcher;
 
 // node_modules/.pnpm/msw@2.7.5_typescript@5.8.3/node_modules/msw/lib/node/index.mjs
 var import_node_async_hooks = require("async_hooks");
@@ -18409,29 +18449,52 @@ var HttpResponse = class _HttpResponse extends FetchResponse {
   }
 };
 
+// node_modules/.pnpm/msw@2.7.5_typescript@5.8.3/node_modules/msw/lib/core/passthrough.mjs
+function passthrough() {
+  return new Response(null, {
+    status: 302,
+    statusText: "Passthrough",
+    headers: {
+      "x-msw-intention": "passthrough"
+    }
+  });
+}
+
 // node_modules/.pnpm/msw@2.7.5_typescript@5.8.3/node_modules/msw/lib/core/index.mjs
 checkGlobals();
 
-// src/mocks/handlers.ts
-var handlers = [
-  // 何も返さないパターン
-  http3.get("http://localhost:3000/api/greeting/none", () => {
-    console.log("server log: GET http://localhost:3000/api/greeting/none");
-  }),
-  // 処理が貫通するパターン
-  // http.get("http://localhost:3000/api/greeting/passthrough", () => {
-  //   console.log(
-  //     "server log: GET http://localhost:3000/api/greeting/passthrough"
-  //   );
-  //   return passthrough();
-  // }),
-  // Responseを返すパターン
-  http3.get("http://localhost:3000/api/greeting/reponse", () => {
+// src/mocks/api/greeting/none.ts
+var noneHandler = http3.get("http://localhost:3000/api/greeting/none", () => {
+  console.log("server log: GET http://localhost:3000/api/greeting/none");
+});
+var none_default2 = noneHandler;
+
+// src/mocks/api/greeting/passthrough.ts
+var passthroughHandler = http3.get(
+  "http://localhost:3000/api/greeting/passthrough",
+  () => {
+    console.log(
+      "server log: GET http://localhost:3000/api/greeting/passthrough"
+    );
+    return passthrough();
+  }
+);
+var passthrough_default = passthroughHandler;
+
+// src/mocks/api/greeting/response.ts
+var responseHandler = http3.get(
+  "http://localhost:3000/api/greeting/reponse",
+  () => {
     console.log("server log: GET http://localhost:3000/api/greeting/reponse");
     return new HttpResponse("Hello, World!", { status: 200 });
-  }),
-  // Path Params
-  http3.get("http://localhost:3000/api/greeting/path/:name", ({ params }) => {
+  }
+);
+var response_default2 = responseHandler;
+
+// src/mocks/api/greeting/path.ts
+var pathParamsHandler = http3.get(
+  "http://localhost:3000/api/greeting/path/:name",
+  ({ params }) => {
     const { name } = params;
     console.log(
       "server log: GET http://localhost:3000/api/greeting/path/:name"
@@ -18440,9 +18503,14 @@ var handlers = [
     return HttpResponse.text("Hello, " + params.name, {
       status: 200
     });
-  }),
-  // Query Params
-  http3.get("http://localhost:3000/api/greeting/query", ({ request }) => {
+  }
+);
+var path_default2 = pathParamsHandler;
+
+// src/mocks/api/greeting/query.ts
+var queryParamsHandler = http3.get(
+  "http://localhost:3000/api/greeting/query",
+  ({ request }) => {
     const url = new URL(request.url);
     const name = url.searchParams.get("name");
     console.log("server log: GET http://localhost:3000/api/greeting/query");
@@ -18450,7 +18518,48 @@ var handlers = [
     return HttpResponse.text("Hello, " + name, {
       status: 200
     });
-  })
+  }
+);
+var query_default2 = queryParamsHandler;
+
+// src/mocks/api/blog/post.ts
+var postHandler = (posts) => {
+  return http3.post(
+    "http://localhost:3000/api/blog/post",
+    async ({ request }) => {
+      const newPost = await request.json();
+      posts.set(posts.size, newPost);
+      return HttpResponse.json(newPost, { status: 201 });
+    }
+  );
+};
+var post_default2 = postHandler;
+
+// src/mocks/api/blog/allPosts.ts
+var allPostsHandler = (posts) => {
+  return http3.get("http://localhost:3000/api/blog/all", async () => {
+    return HttpResponse.json(posts, { status: 201 });
+  });
+};
+var allPosts_default2 = allPostsHandler;
+
+// src/mocks/handlers.ts
+var allPosts = /* @__PURE__ */ new Map();
+var handlers = [
+  // GET: 何も返さないパターン
+  none_default2,
+  // GET: 処理が貫通するパターン
+  passthrough_default,
+  // GET: Responseを返すパターン
+  response_default2,
+  // GET: Path Params pattern
+  path_default2,
+  // GET: Query Params pattern
+  query_default2,
+  // POST: AllPostsに新規投稿を追加するパターン
+  post_default2(allPosts),
+  // GET: AllPostsを返すパターン
+  allPosts_default2(allPosts)
 ];
 
 // src/mocks/node.ts
@@ -18459,14 +18568,18 @@ var server = setupServer(...handlers);
 // src/index.ts
 server.listen();
 var main = async () => {
-  const none = await noneFetcher();
+  const none = await none_default();
   console.log("");
-  const response = await responseFetcher();
+  const response = await response_default();
   console.log("response: " + response + "\n");
-  const pathParams = await pathParamsFetcher();
+  const pathParams = await path_default();
   console.log("pathParams: " + pathParams + "\n");
-  const queryParams = await queryParamsFetcher();
+  const queryParams = await query_default();
   console.log("queryParams: " + queryParams + "\n");
+  const post = await post_default();
+  console.log("post: " + post + "\n");
+  const allPosts2 = await allPosts_default();
+  console.log("allPosts: " + allPosts2 + "\n");
 };
 main();
 /*! Bundled license information:

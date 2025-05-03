@@ -1,9 +1,5 @@
 import { describe, expect, test } from "vitest";
-import {
-  pathParamsFetcher,
-  queryParamsFetcher,
-  responseFetcher,
-} from "./lib/fetcher";
+import { pathParamsFetcher, queryParamsFetcher, responseFetcher } from "./lib";
 
 describe("Mock Service Workers", () => {
   test("Responseを返すパターン", async () => {
